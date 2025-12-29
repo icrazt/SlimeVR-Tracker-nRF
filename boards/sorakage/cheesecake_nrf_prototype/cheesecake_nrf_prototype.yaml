@@ -1,0 +1,10 @@
+identifier: cheesecake_nrf_prototype/nrf52840
+name: CheeseCake nRF PROTOTYPE
+vendor: sorakage
+type: mcu
+arch: arm
+ram: 256
+flash: 1024
+toolchain:
+  - zephyr
+supported: []
