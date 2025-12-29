@@ -26,6 +26,21 @@
 		watchdog0 = &wdt0;
 	};
 
+	battery-divider {
+		compatible = "voltage-divider";
+		status = "okay";
+		io-channels = <&adc 12>; // Measure VDDHDIV5
+		output-ohms = <1>;
+		full-ohms = <5>;
+	};
+
+	zephyr,user {
+		int0-gpios = <&gpio0 17 0>;
+		led-gpios = <&gpio0 15 GPIO_OPEN_SOURCE>;
+		// clk-gpios = <&gpio0 20 GPIO_OPEN_DRAIN>; // Uncomment and set to correct pin if using an external clock (crystal oscillator)
+		vcc-gpios = <&gpio0 31 0>;
+	};
+
 	leds {
 		compatible = "gpio-leds";
 		led0: led_0 {
@@ -91,6 +106,10 @@
 	status = "okay";
 };
 
+&adc {
+	status = "okay";
+};
+
 &uart0 {
 	compatible = "nordic,nrf-uarte";
 	status = "okay";
@@ -106,6 +125,18 @@
 	pinctrl-0 = <&i2c0_default>;
 	pinctrl-1 = <&i2c0_sleep>;
 	pinctrl-names = "default", "sleep";
+
+	imu: imu@0 { // any address out of range (00, 7f, etc. will search all addresses and stored address first if available, specify an address here to search first otherwise
+		compatible = "i2c-device";
+		label = "imu";
+		reg = <0>;
+	};
+
+	mag: mag@0 {
+		compatible = "i2c-device";
+		label = "mag";
+		reg = <0>;
+	};
 }; 
 
 &spi1 {
